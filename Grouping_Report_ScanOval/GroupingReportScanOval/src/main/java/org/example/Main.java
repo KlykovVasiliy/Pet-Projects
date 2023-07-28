@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
-        String workDirectory = Paths.get("").toAbsolutePath().getParent().toString();
+        String workDirectory = Paths.get("").toAbsolutePath().toString();
         String srcDir = workDirectory.concat("/sourceFiles/");
         String outDir = workDirectory.concat("/ourFiles/");
 
