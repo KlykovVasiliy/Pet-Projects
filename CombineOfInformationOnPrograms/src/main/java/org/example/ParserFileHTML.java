@@ -34,6 +34,10 @@ public class ParserFileHTML {
         return document.select("table").first().select("tr");
     }
 
+//    public Elements getRowsFromFileEnum() {
+//
+//    }
+
     public Elements getRowFromFileScripts() {
         return document.select("table");
     }
