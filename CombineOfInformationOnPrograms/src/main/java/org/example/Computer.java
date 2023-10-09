@@ -1,12 +1,6 @@
 package org.example;
 
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Computer {
     private String name;
@@ -47,36 +41,6 @@ public class Computer {
 
     public void setProgramList(List<Program> programList) {
         this.programList = programList;
-    }
-
-    public void fillInInformationAboutTheWorkStation(Elements infoAboutOS, Elements rowsPrograms) {
-        setInfoAboutComputer(infoAboutOS);
-        addProgramsToComputer(rowsPrograms);
-    }
-
-    private void addProgramsToComputer (Elements rowsTable) {
-        for(Element row : rowsTable) {
-            Elements cells = row.select("td");
-
-            Program program = new Program();
-            if (cells.hasClass("s12")) {
-                program.setManufacture(cells.get(1).text());
-                program.setName(cells.get(2).text());
-                program.setVersion(cells.get(3).text());
-                programList.add(program);
-            }
-        }
-    }
-
-    private void setInfoAboutComputer(Elements rowsTable) {
-        for(Element row : rowsTable) {
-            Elements cells = row.select("td");
-            if(cells.hasClass("s10")) {
-                name = cells.get(0).text();
-                nameOS = cells.get(1).text();
-                programList = new ArrayList<>();
-            }
-        }
     }
 
     @Override
