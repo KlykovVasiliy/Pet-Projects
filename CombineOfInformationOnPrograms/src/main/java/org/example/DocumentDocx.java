@@ -3,6 +3,7 @@ package org.example;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.example.workstation.Program;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

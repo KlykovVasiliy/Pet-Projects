@@ -1,4 +1,4 @@
-package org.example;
+package org.example.workstation;
 
 import java.util.Comparator;
 
@@ -11,6 +11,11 @@ public class Program implements Comparable<Program> {
         this.name = name;
         this.version = version;
         this.manufacture = manufacture;
+    }
+
+    public Program(String name, String version) {
+        this.name = name;
+        this.version = version;
     }
 
     public String getName() {
@@ -47,7 +52,6 @@ public class Program implements Comparable<Program> {
         int result = Integer.hashCode(name.hashCode());
         result = 31 * result + Integer.hashCode(version.hashCode());
 //        result = 31 * result + Integer.hashCode(manufacture.hashCode());
-
         return result;
     }
 
@@ -60,7 +64,6 @@ public class Program implements Comparable<Program> {
             return false;
         }
         Program p = (Program) obj;
-
         return p.name.equals(this.name) && p.version.equals(this.version);
 //                && p.manufacture.equalsIgnoreCase(this.manufacture);
     }

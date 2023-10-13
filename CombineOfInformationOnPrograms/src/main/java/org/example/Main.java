@@ -1,5 +1,12 @@
 package org.example;
 
+import org.example.type_file.FileEnum;
+import org.example.type_file.FileScript;
+import org.example.type_file.FileTenStrike;
+import org.example.workstation.Computer;
+import org.example.workstation.Program;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,97 +19,66 @@ import java.util.stream.Stream;
 
 
 public class Main {
-    private static Map<String, Set<Program>> programMapForEachComputer = new TreeMap<>();
-
     public static void main(String[] args) {
-        String sourceDirectoryTeenStrike = "10/";
+        String sourceDirectoryProgramsTeenStrike = "10/Programs/";
+        String sourceDirectoryComputersTeenStrike = "10/Computers/";
         String sourceDirectoryEnum = "Enum/";
         String sourceDirectoryScripts = "Scripts/";
 
-        for (String fileTeenStrike : getListFiles(sourceDirectoryTeenStrike)) {
-            SourceFilesParser sourceFilesParser = new SourceFilesParser(fileTeenStrike, "UTF-8");
-            addProgramsToMapComputers(sourceFilesParser.getRowsFromFileTeenStrike());
+        //--------------------------------------
+        List<Elements> tenStrikePrograms = new ArrayList<>();
+        List<Elements> tenStrikeComputers = new ArrayList<>();
+        for (String file : getListFiles(sourceDirectoryProgramsTeenStrike)) {
+            tenStrikePrograms.add(new SourceFilesParser(file, "UTF-8").getRowsFromFileTenStrike());
         }
-
-        for (String fileScripts : getListFiles(sourceDirectoryScripts)) {
-            SourceFilesParser sourceFilesParser = new SourceFilesParser(fileScripts, "windows-1251");
-            addProgramsToMapComputers(sourceFilesParser.getRowFromFileScripts());
+        for (String file : getListFiles(sourceDirectoryComputersTeenStrike)) {
+            tenStrikeComputers.add(new SourceFilesParser(file, "UTF-8").getRowsFromFileTenStrike());
         }
-
-        for (String fileEnum : getListFiles(sourceDirectoryEnum)) {
-            SourceFilesParser sourceFilesParser = new SourceFilesParser(fileEnum, "windows-1251");
-            addProgramsToMapComputers(sourceFilesParser.getRowsFromFileEnum());
-        }
-
-        printInfoAboutInstalledProgramsForEachComputer();
-
-        for (Program program : getListAllPrograms()) {
-            System.out.println(program.toString().concat(";"));
-        }
-        DocumentDocx.writeToFileDocx(getListAllPrograms());
-    }
-
-    private static void addProgramsToMapComputers(List<String[]> list) {
-        for (String[] strings : list) {
-            String nameProgram = "";
-            String versionProgram = "";
-            String manufacture = "";
-            String nameComputer = "";
-            if (strings.length == 4) {
-                nameComputer = strings[0].toUpperCase();
-                nameProgram = getDoubleQuotesFromQuotes(strings[1]);
-                manufacture = getDoubleQuotesFromQuotes(strings[3]);
-                versionProgram = strings[2];
+        FileTenStrike fileTenStrike = new FileTenStrike(tenStrikePrograms, tenStrikeComputers);
+        List<Computer> computerList1 = fileTenStrike.getComputersWithInstalledPrograms();
+        for (Computer computer : computerList1) {
+            System.out.println(computer.getName());
+            for (Program program : computer.getProgramSet()) {
+                System.out.printf("%s - %s - %s%n", program.getName(), program.getVersion(),
+                        program.getManufacture());
             }
-            if (strings.length == 2) {
-                nameComputer = strings[1];
-                nameProgram = strings[0];
-            }
-            Program program = new Program(nameProgram, versionProgram, manufacture);
-            addByOneProgramToMap(nameComputer, program);
+//            System.out.println(computer);
+            System.out.println();
         }
-    }
 
-    private static void addByOneProgramToMap(String computer, Program program) {
-        String[] computers;
-        if (computer.contains(", ")) {
-            computers = computer.split(", ");
-        } else {
-            computers = new String[]{computer};
-        }
-        for (String pc : computers) {
-            Set<Program> programSet;
-            if (programMapForEachComputer.containsKey(pc)) {
-                programSet = programMapForEachComputer.get(pc);
-            } else {
-                programSet = new TreeSet<>();
-            }
-            programSet.add(program);
-            programMapForEachComputer.put(pc, programSet);
-        }
-    }
-
-    private static void printInfoAboutInstalledProgramsForEachComputer() {
-        for (Map.Entry<String, Set<Program>> pair : programMapForEachComputer.entrySet()) {
-            System.out.println("----------------------------------------------");
-            System.out.println(pair.getKey());
-            for (Program program : pair.getValue()) {
-                System.out.println(program.getName().concat("; "));
-            }
-            System.out.println("Установлено программ: " + pair.getValue().size());
-            System.out.println("----------------------------------------------");
-        }
-    }
-
-    private static List<Program> getListAllPrograms() {
-        List<Program> programList = new ArrayList<>();
-        for (Map.Entry<String, Set<Program>> pair : programMapForEachComputer.entrySet()) {
-            for (Program program : pair.getValue()) {
-                programList.add(program);
+        //--------------------------------------
+        for (String file : getListFiles(sourceDirectoryEnum)) {
+            SourceFilesParser sourceFilesParser = new SourceFilesParser(file, "windows-1251");
+            FileEnum fileEnum = new FileEnum(sourceFilesParser.getRowsFromFileEnum());
+            List<Computer> computerList2 = fileEnum.getComputersWithInstalledPrograms();
+            for (Computer computer : computerList2) {
+                System.out.println(computer.getName());
+                for (Program program : computer.getProgramSet()) {
+                    System.out.printf("%s - %s - %s%n", program.getName(), program.getVersion(),
+                            program.getManufacture());
+                }
+                System.out.println("Количество установленных программ: " + computer.getProgramSet().size());
+                System.out.println();
             }
         }
-        programList = programList.stream().sorted().distinct().toList();
-        return programList;
+
+        //--------------------------------------
+        for (String file : getListFiles(sourceDirectoryScripts)) {
+            SourceFilesParser sourceFilesParser = new SourceFilesParser(file, "windows-1251");
+            FileScript fileScript = new FileScript(sourceFilesParser.getRowFromFileScripts());
+            List<Computer> computerList3 = fileScript.getComputersWithInstalledPrograms();
+            for (Computer computer : computerList3) {
+                System.out.println(computer.getName());
+                for (Program program : computer.getProgramSet()) {
+                    System.out.printf("%s - %s - %s%n", program.getName(), program.getVersion(),
+                            program.getManufacture());
+                }
+                System.out.println();
+            }
+        }
+        //--------------------------------------
+
+//        DocumentDocx.writeToFileDocx(getListAllPrograms());
     }
 
 
@@ -128,24 +104,7 @@ public class Main {
         }
         return setFiles;
     }
-
-    private static String getDoubleQuotesFromQuotes(String text) {
-        text = text.replaceAll(String.valueOf((char) 171), "\"");
-        text = text.replaceAll(String.valueOf((char) 187), "\"");
-        text = text.replaceAll(String.valueOf((char) 8220), "\"");
-        text = text.replaceAll(String.valueOf((char) 8221), "\"");
-        return text.replaceAll("'", "\"");
-    }
-
-
-//    private void setInfoAboutComputer(Elements rowsTable) {
-//        for(Element row : rowsTable) {
-//            Elements cells = row.select("td");
-//            if(cells.hasClass("s10")) {
-//                name = cells.get(0).text();
-//                nameOS = cells.get(1).text();
-//                programList = new ArrayList<>();
-//            }
-//        }
-//    }
 }
+/*
+    Реалиховать сортировку рабочих станций либо сделать чтобы программы были отсортированы
+ */
