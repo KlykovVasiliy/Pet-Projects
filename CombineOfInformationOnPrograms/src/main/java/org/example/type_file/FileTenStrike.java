@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class FileTenStrike {
+public class FileTenStrike implements Computers {
     private Map<String, Computer> mapComputers;
     private List<Elements> programElements;
     private List<Elements> computerElements;
@@ -22,6 +22,7 @@ public class FileTenStrike {
         mapComputers = new TreeMap<>();
     }
 
+    @Override
     public List<Computer> getComputersWithInstalledPrograms() {
         for (Elements rowsTable : programElements) {
             for (Element row : rowsTable) {

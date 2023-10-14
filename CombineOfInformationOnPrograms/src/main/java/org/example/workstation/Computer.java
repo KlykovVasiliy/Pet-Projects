@@ -32,7 +32,22 @@ public class Computer implements Comparable<Computer> {
     }
 
     public void addProgramOnTheComputer(Program program) {
+        String programName = getDoubleQuotesFromQuotes(program.getName());
+        String manufacture = getDoubleQuotesFromQuotes(program.getManufacture());
+        program.setName(programName);
+        program.setManufacture(manufacture);
         programSet.add(program);
+    }
+
+    private String getDoubleQuotesFromQuotes(String text) {
+        if (text == null) {
+            return null;
+        }
+        text = text.replaceAll(String.valueOf((char) 171), "\"");
+        text = text.replaceAll(String.valueOf((char) 187), "\"");
+        text = text.replaceAll(String.valueOf((char) 8220), "\"");
+        text = text.replaceAll(String.valueOf((char) 8221), "\"");
+        return text.replaceAll("'", "\"");
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.jsoup.select.Elements;
 
 import java.util.*;
 
-public class FileScript {
+public class FileScript implements Computers {
     private Map<String, Computer> mapComputers;
     private Elements tables;
 
@@ -17,6 +17,7 @@ public class FileScript {
         mapComputers = new TreeMap<>();
     }
 
+    @Override
     public List<Computer> getComputersWithInstalledPrograms() {
         Elements tablePrograms = tables.get(tables.size() - 1).select("tr");
         for (Element row : tablePrograms) {

@@ -8,13 +8,14 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileEnum {
+public class FileEnum implements Computers {
     private Elements rowsTable;
 
     public FileEnum(Elements rowsTable) {
         this.rowsTable = rowsTable;
     }
 
+    @Override
     public List<Computer> getComputersWithInstalledPrograms() {
         List<Computer> list = new ArrayList<>();
         Computer computer = new Computer();
