@@ -56,6 +56,7 @@ public class Main {
 //        repository.getListAllPrograms().forEach(System.out::println);
 
         DocumentDocx.writeProgramsForEachComputer(repository.getComputerList());
+        DocumentDocx.writeAllProgramsWithLocalization(repository.getComputerList());
         DocumentDocx.writeAllProgramsInTableWithNameVersionManufacture(repository.getListAllPrograms());
     }
 
