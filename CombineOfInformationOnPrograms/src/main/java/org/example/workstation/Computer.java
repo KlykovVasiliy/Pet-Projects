@@ -41,7 +41,7 @@ public class Computer implements Comparable<Computer> {
 
     private String getDoubleQuotesFromQuotes(String text) {
         if (text == null) {
-            return null;
+            return "";
         }
         text = text.replaceAll(String.valueOf((char) 171), "\"");
         text = text.replaceAll(String.valueOf((char) 187), "\"");
