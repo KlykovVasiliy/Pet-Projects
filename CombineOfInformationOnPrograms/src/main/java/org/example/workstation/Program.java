@@ -51,7 +51,6 @@ public class Program implements Comparable<Program> {
     public int hashCode() {
         int result = Integer.hashCode(name.hashCode());
         result = 31 * result + Integer.hashCode(version.hashCode());
-//        result = 31 * result + Integer.hashCode(manufacture.hashCode());
         return result;
     }
 
@@ -65,14 +64,12 @@ public class Program implements Comparable<Program> {
         }
         Program p = (Program) obj;
         return p.name.equals(this.name) && p.version.equals(this.version);
-//                && p.manufacture.equalsIgnoreCase(this.manufacture);
     }
 
     @Override
     public int compareTo(Program o) {
         return Comparator.comparing(Program::getName)
                 .thenComparing(Program::getVersion)
-//                .thenComparing(Program::getManufacture)
                 .compare(this, o);
     }
 }
