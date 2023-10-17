@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class DocumentDocx {
 
@@ -65,7 +66,7 @@ public class DocumentDocx {
                 row.getCell(3).setText(pair.getKey().getManufacture());
                 StringBuilder builder = new StringBuilder();
                 for (String str : pair.getValue()) {
-                    builder.append(str). append("; ");
+                    builder.append(str).append("; ");
                 }
                 row.getCell(4).setText(builder.toString());
             }
@@ -96,25 +97,29 @@ public class DocumentDocx {
     }
 
     public static void writeProgramsForEachComputer(List<Computer> computerList) {
-        //добавить столбец локализация
         try (XWPFDocument doc = new XWPFDocument()) {
             XWPFTable table = doc.createTable();
 
             XWPFTableRow row0 = table.getRow(0);
             row0.getCell(0).setText("№");
             row0.addNewTableCell().setText("Компьютер");
-            row0.addNewTableCell().setText("Описание");
+            row0.addNewTableCell().setText("Операционная система");
+            row0.addNewTableCell().setText("Список программ");
 
             for (int i = 0; i < computerList.size(); i++) {
                 XWPFTableRow row = table.createRow();
                 row.getCell(0).setText(String.valueOf(i + 1));
                 row.getCell(1).setText(computerList.get(i).getName());
-                StringBuilder builder = new StringBuilder();
-                for (Program program : computerList.get(i).getProgramSet()) {
-                    builder.append(program.getName()).append(";")
-                            .append(System.getProperty("line.separator"));
-                }
-                row.getCell(2).setText(builder.toString());
+                String os = computerList.get(i).getOperationSystem().getName().concat(" ")
+                        .concat(computerList.get(i).getOperationSystem().getVersion());
+                row.getCell(2).setText(os);
+                String programs = computerList.get(i).getProgramSet().stream()
+                        .map(Program::getName)
+                        .sorted()
+                        .distinct()
+                        .collect(Collectors.joining("; "));
+
+                row.getCell(3).setText(programs);
             }
             try (FileOutputStream out = new FileOutputStream(
                     "src/main/resources/resultDirectory/Список программ по каждому компьютеру.docx")) {
