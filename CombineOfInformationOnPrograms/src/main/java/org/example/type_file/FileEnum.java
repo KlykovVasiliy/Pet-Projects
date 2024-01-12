@@ -25,7 +25,10 @@ public class FileEnum implements Computers {
                 continue;
             }
             if (text.indexOf("УСТАНОВЛЕННОЕ НА ") == 0) {
-                String nameComputer = text.substring("УСТАНОВЛЕННОЕ НА ".length(), text.lastIndexOf(" "));
+                String nameComputer =
+                        text.substring("УСТАНОВЛЕННОЕ НА ".length(), text.lastIndexOf(" "));
+                nameComputer = nameComputer.contains(" x64") ? nameComputer.substring(0,
+                        nameComputer.indexOf(" x64")) : nameComputer;
                 computer = new Computer();
                 computer.setName(nameComputer.toUpperCase());
                 list.add(computer);
