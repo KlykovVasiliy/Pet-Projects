@@ -37,14 +37,14 @@ public class DocumentDocx {
         for (Vulnerabilitie vulnerabilitie : map.values()) {
             var key = vulnerabilitie.getKeyProgram();
             var description = vulnerabilitie.getDescProgram();
-            var bdu = vulnerabilitie.getBduSet();
+            var bdu = vulnerabilitie.getBdu();
 
             XWPFTableRow row = table.createRow();
             row.getCell(0).setText(String.valueOf(positionRow));
             row.getCell(1).setText(key);
             row.getCell(2).setText(description);
-            row.getCell(3).setText(bdu.toString());
-            row.getCell(4).setText(String.valueOf(bdu.size()));
+            row.getCell(3).setText(bdu);
+            row.getCell(4).setText(String.valueOf(bdu.split(", ").length));
 
             positionRow++;
         }

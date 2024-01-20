@@ -16,8 +16,7 @@ public class SourceFilesParser {
         vulnerabilitieMap = new HashMap<>();
     }
 
-    public Elements getElementsTable(String pathFile) {
-        File file = new File(pathFile);
+    public Elements getElementsTable(File file) {
         Document doc = null;
         try {
             doc = Jsoup.parse(file, "UTF-8");

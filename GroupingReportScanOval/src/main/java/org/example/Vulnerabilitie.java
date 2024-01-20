@@ -1,7 +1,7 @@
 package org.example;
 
-import java.util.Comparator;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Vulnerabilitie implements Comparator<Vulnerabilitie> {
 
@@ -23,8 +23,12 @@ public class Vulnerabilitie implements Comparator<Vulnerabilitie> {
         bduSet.add(bdu);
     }
 
-    public Set<String> getBduSet() {
-        return bduSet;
+    public String getBdu() {
+        return bduSet.stream()
+                .flatMap(s -> Arrays.stream(s.split(" ")))
+                .sorted()
+                .distinct()
+                .collect(Collectors.joining(", "));
     }
 
     public String getKeyProgram() {
