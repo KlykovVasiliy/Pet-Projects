@@ -30,6 +30,7 @@ public class ProgramService {
         for (String line : list) {
             if (line.contains(PathsInTheRegistry.FRAGMENT_REGISTRY_PATH.getPathRegistry())) {
                 if (program != null && program.getDisplayName() != null) {
+                    replaceNullOnTheEmptyString(program);
                     programList.add(program);
                 }
                 program = new Program();
@@ -76,6 +77,18 @@ public class ProgramService {
             value = parts.length == 3 ? parts[parts.length - 1] : value;
         }
         return value;
+    }
+
+    private void replaceNullOnTheEmptyString (Program program) {
+        if (program.getDisplayVersion() == null) {
+            program.setDisplayVersion("");
+        }
+        if (program.getInstallLocation() == null) {
+            program.setInstallLocation("");
+        }
+        if (program.getPublisher() == null) {
+            program.setPublisher("");
+        }
     }
 
 }
