@@ -1,9 +1,10 @@
 package org.example.model;
 
 public class Program {
-    String displayName;
-    String displayVersion;
-    String publisher;
+    private String displayName;
+    private String displayVersion;
+    private String installLocation;
+    private String publisher;
 
     public String getDisplayName() {
         return displayName;
@@ -21,6 +22,14 @@ public class Program {
         this.displayVersion = displayVersion;
     }
 
+    public String getInstallLocation() {
+        return installLocation;
+    }
+
+    public void setInstallLocation(String installLocation) {
+        this.installLocation = installLocation;
+    }
+
     public String getPublisher() {
         return publisher;
     }
@@ -31,6 +40,9 @@ public class Program {
 
     @Override
     public String toString() {
-        return displayName + " - " + displayVersion + " - " + publisher;
+        return "DisplayName: " + displayName + "\n" +
+                "DisplayVersion: " + displayVersion + "\n" +
+                "Publisher: " + publisher + "\n" +
+                "InstallLocation: " + installLocation + "\n";
     }
 }
