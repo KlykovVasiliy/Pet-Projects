@@ -43,6 +43,7 @@ public class ProgramService {
                     case "DisplayName" -> program.setDisplayName(value);
                     case "DisplayVersion" -> program.setDisplayVersion(value);
                     case "Publisher" -> program.setPublisher(value);
+                    case "InstallLocation" -> program.setInstallLocation(value);
                 }
             }
         }
@@ -60,7 +61,9 @@ public class ProgramService {
             return true;
         } else if (nameParameter.equals(ParameterAProgram.PUBLISHER.getParameter())) {
             return true;
-        } else {
+        } else if (nameParameter.equals(ParameterAProgram.INSTALL_LOCATION.getParameter())) {
+            return true;
+        }else {
             return false;
         }
     }
@@ -70,7 +73,7 @@ public class ProgramService {
 
         if (line.contains(parameter)) {
             String[] parts = line.split(" {4}");
-            value = parts[parts.length - 1];
+            value = parts.length == 3 ? parts[parts.length - 1] : value;
         }
         return value;
     }
