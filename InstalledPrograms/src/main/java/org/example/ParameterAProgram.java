@@ -3,6 +3,7 @@ package org.example;
 public enum ParameterAProgram {
     DISPLAY_NAME("DisplayName"),
     DISPLAY_VERSION("DisplayVersion"),
+    INSTALL_LOCATION("InstallLocation"),
     PUBLISHER("Publisher");
 
     private final String parameter;
