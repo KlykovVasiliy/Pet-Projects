@@ -1,5 +1,7 @@
 package org.example.model;
 
+import java.util.Objects;
+
 public class Program {
     private String displayName;
     private String displayVersion;
@@ -36,6 +38,19 @@ public class Program {
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Program program = (Program) o;
+        return Objects.equals(displayName, program.displayName) && Objects.equals(displayVersion, program.displayVersion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(displayName, displayVersion);
     }
 
     @Override
