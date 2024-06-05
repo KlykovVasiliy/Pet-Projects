@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +25,16 @@ public class RegistryService {
 
     public List<String> getListPathsProgramsAndParametersFromRegistry() {
         Process process = getProcess(registry.getPathsInTheRegistry().getPathRegistry());
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(process.getInputStream(), "CP866"))) {
             String line;
 
             while ((line = reader.readLine()) != null) {
                 if (line.isEmpty()) {
                     continue;
                 }
-                listInstalledPrograms.add(line.trim());
+                line = getStringInFormatUTF8(line);
+                listInstalledPrograms.add(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,5 +56,10 @@ public class RegistryService {
 
     public void setPathRegistry(PathsInTheRegistry pathsInTheRegistry) {
         registry.setPathsInTheRegistry(pathsInTheRegistry);
+    }
+
+    private String getStringInFormatUTF8(String line) {
+        byte[] buffer = line.trim().getBytes(StandardCharsets.UTF_8);
+        return new String(buffer);
     }
 }
