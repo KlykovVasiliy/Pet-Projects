@@ -20,9 +20,11 @@ public class ProgramService {
     @Autowired
     public ProgramService(RegistryService registryService) {
         this.registryService = registryService;
+        setPathRegistry(PathsInTheRegistry.PROGRAM_FILES);
+        setPathRegistry(PathsInTheRegistry.PROGRAM_FILES_X86);
     }
 
-    public void setPathRegistry(PathsInTheRegistry pathsInTheRegistry) {
+    private void setPathRegistry(PathsInTheRegistry pathsInTheRegistry) {
         registryService.setPathRegistry(pathsInTheRegistry);
         readInformationAboutPrograms();
     }
@@ -58,7 +60,7 @@ public class ProgramService {
         return value;
     }
 
-    private void replaceNullOnTheEmptyString (Program program) {
+    private void replaceNullOnTheEmptyString(Program program) {
         if (program.getDisplayVersion() == null) {
             program.setDisplayVersion("");
         }
@@ -83,7 +85,7 @@ public class ProgramService {
         }
     }
 
-    public void readInformationAboutPrograms() {
+    private void readInformationAboutPrograms() {
         List<String> list = registryService.getListPathsProgramsAndParametersFromRegistry();
         Program program = null;
         for (String line : list) {
