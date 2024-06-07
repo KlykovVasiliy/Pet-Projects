@@ -3,6 +3,7 @@ out/
 .idea/
 out/
 target/
+src/main/resources/
 
 # User-specific stuff
 .idea/**/workspace.xml
