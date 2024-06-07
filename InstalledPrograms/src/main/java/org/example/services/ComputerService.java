@@ -1,5 +1,6 @@
 package org.example.services;
 
+import org.example.model.Computer;
 import org.example.model.Program;
 import org.example.model.SystemInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,12 @@ public class ComputerService {
 
     public SystemInfo getInformationAboutSystem() {
         return systemInfoService.getSystemInfo();
+    }
+
+    public Computer getComputer() {
+        Computer computer = new Computer();
+        computer.setSystemInfo(systemInfoService.getSystemInfo());
+        computer.setProgramList(programService.getListPrograms());
+        return computer;
     }
 }
