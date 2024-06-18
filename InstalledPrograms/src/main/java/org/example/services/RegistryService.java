@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +32,7 @@ public class RegistryService {
                 if (line.isEmpty()) {
                     continue;
                 }
-                line = getStringInFormatUTF8(line);
-                listInstalledPrograms.add(line);
+                listInstalledPrograms.add(line.trim());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,10 +54,5 @@ public class RegistryService {
 
     public void setPathRegistry(PathsInTheRegistry pathsInTheRegistry) {
         registry.setPathsInTheRegistry(pathsInTheRegistry);
-    }
-
-    private String getStringInFormatUTF8(String line) {
-        byte[] buffer = line.trim().getBytes(StandardCharsets.UTF_8);
-        return new String(buffer);
     }
 }

@@ -6,9 +6,12 @@ import org.example.model.Program;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -24,9 +27,10 @@ public class DocumentHtmlService {
     }
 
     public void WriteToDocument() {
-        String fileName = "output.html";
+        String fileName = computer.getSystemInfo().getNamePC().concat(".html");
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileName)
+                , StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
             writer.write(HtmlTags.HTML_START.getTag());
             writer.write(HtmlTags.HEAD.getTag());
             writer.write(HtmlTags.BODY_START.getTag());
