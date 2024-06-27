@@ -1,7 +1,10 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import java.util.List;
 
+@JsonAutoDetect
 public class Computer {
     private SystemInfo systemInfo;
     private List<Program> programList;

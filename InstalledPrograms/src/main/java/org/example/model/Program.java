@@ -1,10 +1,16 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 
+@JsonAutoDetect
 public class Program {
     private String displayName;
     private String displayVersion;
+
+    @JsonIgnore
     private String installLocation;
     private String publisher;
 
