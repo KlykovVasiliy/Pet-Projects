@@ -1,8 +1,6 @@
 package org.example.services;
 
 import org.example.PathsInTheRegistry;
-import org.example.model.Registry;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -13,17 +11,11 @@ import java.util.List;
 
 @Service
 public class RegistryService {
-
-    private Registry registry;
+    private String branchRegistry;
     private List<String> listInstalledPrograms = new ArrayList<>();
 
-    @Autowired
-    public RegistryService(Registry registry) {
-        this.registry = registry;
-    }
-
     public List<String> getListPathsProgramsAndParametersFromRegistry() {
-        Process process = getProcess(registry.getPathsInTheRegistry().getPathRegistry());
+        Process process = getProcess(branchRegistry);
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(process.getInputStream(), "CP866"))) {
             String line;
@@ -53,6 +45,6 @@ public class RegistryService {
     }
 
     public void setPathRegistry(PathsInTheRegistry pathsInTheRegistry) {
-        registry.setPathsInTheRegistry(pathsInTheRegistry);
+        branchRegistry = pathsInTheRegistry.getPathRegistry();
     }
 }
