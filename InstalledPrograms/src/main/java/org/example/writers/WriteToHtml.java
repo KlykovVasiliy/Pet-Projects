@@ -1,9 +1,10 @@
-package org.example.services;
+package org.example.writers;
 
 import org.example.HtmlTags;
 import org.example.model.Computer;
 import org.example.model.Program;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -17,16 +18,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.StringJoiner;
 
-@Service
-public class DocumentHtmlService {
-
-    private Computer computer;
-
-    public void setComputer(Computer computer) {
-        this.computer = computer;
-    }
-
-    public void WriteToDocument() {
+@Component
+@Qualifier(value = "writeToHtml")
+public class WriteToHtml implements WriterDocument {
+    @Override
+    public void writerToDocument(Computer computer) {
         String fileName = computer.getSystemInfo().getNamePC().concat(".html");
 
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileName)
@@ -38,13 +34,13 @@ public class DocumentHtmlService {
             writer.write(HtmlTags.HEADING_ABOUT_SYSTEM.getTag());
             writer.write(HtmlTags.TABLE_START.getTag());
             writer.write(HtmlTags.HEADINGS_TABLE_ABOUT_SYSTEM.getTag());
-            addInformationAboutSystem(writer);
+            addInformationAboutSystem(writer, computer);
             writer.write(HtmlTags.TABLE_END.getTag());
 
             writer.write(HtmlTags.HEADING_ABOUT_PROGRAMS.getTag());
             writer.write(HtmlTags.TABLE_START.getTag());
             writer.write(HtmlTags.HEADINGS_TABLE_ABOUT_PROGRAMS.getTag());
-            addInformationAboutPrograms(writer);
+            addInformationAboutPrograms(writer, computer);
             writer.write(HtmlTags.TABLE_END.getTag());
 
             writer.write(HtmlTags.BODY_END.getTag());
@@ -55,7 +51,7 @@ public class DocumentHtmlService {
         }
     }
 
-    private void addInformationAboutSystem(BufferedWriter writer) throws IOException {
+    private void addInformationAboutSystem(BufferedWriter writer, Computer computer) throws IOException {
         String indent = "\t\t\t<td>";
 
         StringWriter string = new StringWriter();
@@ -80,7 +76,7 @@ public class DocumentHtmlService {
         writer.write(string.toString());
     }
 
-    private void addInformationAboutPrograms(BufferedWriter writer) throws IOException {
+    private void addInformationAboutPrograms(BufferedWriter writer, Computer computer) throws IOException {
         String indent = "\t\t\t";
         List<Program> programList = computer.getProgramList();
         for (int i = 0; i < programList.size(); i++) {
